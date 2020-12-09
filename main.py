@@ -50,8 +50,10 @@ def pintarTableros(tableros,screen):
                     color = amarillo
                 elif tablero[row][column] in indicadores:
                     color = gris
+                    texto = tablero[row][column] #Obtengo el texto de la celda
                 elif tablero[row][column] == "X":
                     color = rojo
+                    texto = tablero[row][column] #Obtengo el texto de la celda
                 else:
                     color = azul
                 x = ((margin+width)*column+margin) + 464*t
@@ -69,11 +71,16 @@ def crearVentana(ancho,largo,titulo):
     return screen
 
 #Revisa si el tiro que se hizo acerto o no
-def revisarTiro(x,y,tablero):
+def revisarTiro(x,y,tablero,barcosActuales):
     if tablero[x][y] in indicadores: #Acerto
+        key_list = list(letrasNumeros.keys()) 
+        val_list = list(letrasNumeros.values())
+        barcosActuales[str(key_list[val_list.index(str(x))])+str(y)] = False
         tablero[x][y] = "X"
+        print("Acerto\n")
     else:                           #No acerto
         tablero[x][y] = "F"
+        print("Fallo\n")
 
 #Logica del juego
 def jugar(miTablero,compuTablero,screen):
@@ -82,28 +89,37 @@ def jugar(miTablero,compuTablero,screen):
     textRect = text.get_rect()
     textRect.center = (464, 480)
     screen.blit(text, textRect)
-    turnoCompu = False
-    cerrar=False #Variable para saber si debo terminar
-    while cerrar==False: #Mientras no deba terminar
+    turnoCompu = random.randint(0,1)
+    if turnoCompu:
+        print("***Inicia la PC ***\n")
+    else:
+        print("***Inicias tu ***\n")
+    cerrar=False 
+    while cerrar==False: 
         pintarTableros([miTablero,compuTablero],screen)
         if not turnoCompu:
-            for event in pygame.event.get(): #Obtengo cualquier cosa que se haga en la ventana 
-                if event.type == pygame.QUIT:   #Si cierra la ventana
-                    cerrar = True                 #Debo terminar el programa
-                if event.type == pygame.MOUSEBUTTONDOWN:    #Si hice click
-                    pos = pygame.mouse.get_pos()            #Obtengo la posicion donde hice click
-                    column=pos[0] // (width+margin)         #Calculo la columna
-                    row=pos[1] // (height+margin)           #Calculo la fila
+            for event in pygame.event.get(): 
+                if event.type == pygame.QUIT:  
+                    cerrar = True                 
+                if event.type == pygame.MOUSEBUTTONDOWN:    
+                    pos = pygame.mouse.get_pos()            
+                    column=pos[0] // (width+margin)         
+                    row=pos[1] // (height+margin)           
                     if column > 10 and row < 11: 
                         column = column-11
-                        print(compuTablero[row][column])
                         if column != 0 and row != 0:       
                             turnoCompu = True
-                            revisarTiro(row,column,compuTablero)
+                            revisarTiro(row,column,compuTablero,barcosOponentes)
         else:
-            x = random.randint(1,10)
-            y = random.randint(1,10)
-            revisarTiro(x,y,miTablero)
+            celda = "T"
+            while celda == "T" or celda == "X": #VALIDACION de que no tire en una casilla que ya tiro antes
+                x = random.randint(1,10)
+                y = random.randint(1,10)
+                celda = miTablero[x][y]
+            key_list = list(letrasNumeros.keys()) 
+            val_list = list(letrasNumeros.values())
+            print("PC ataca "+str(key_list[val_list.index(str(x))])+str(y))
+            revisarTiro(x,y,miTablero,misBarcos)
             turnoCompu = False
 
 #Pide las ubicaciones de los barcos 
@@ -187,6 +203,7 @@ def main():
     
     screen = crearVentana(600,100,"Batalla Naval - Posicionando mis barcos")
     posicionarBarcos(screen,miTablero)
+    
     screen = crearVentana(928,600,"Batalla Naval")
     jugar(miTablero,compuTablero,screen)
 
