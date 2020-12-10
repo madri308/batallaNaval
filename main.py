@@ -47,12 +47,12 @@ def pintarTableros(tableros,screen):
                 if column == 0 or row == 0:
                     color = blanco
                     texto = tablero[row][column] 
-                elif str(tablero[row][column])[0] == "N":
+                elif tablero[row][column][0] == "N":
                     color = amarillo
                 elif tablero[row][column] in indicadores and miTablero:
                     color = gris
                     texto = tablero[row][column] 
-                elif str(tablero[row][column])[0] == "X":
+                elif tablero[row][column][0] == "X":
                     color = rojo
                     texto = tablero[row][column][1] 
                 else:
@@ -96,9 +96,9 @@ def revisarGanador():
 #Revisa si el tiro que se hizo acerto o no
 def revisarTiro(x,y,tablero,barcosActuales):
     if tablero[x][y] in indicadores: #Acerto
-        key_list = list(letrasNumeros.keys()) 
-        val_list = list(letrasNumeros.values())
-        barcosActuales[str(key_list[val_list.index(str(x))])+str(y)] = False
+        keyList = list(letrasNumeros.keys()) 
+        valList = list(letrasNumeros.values())
+        barcosActuales[str(keyList[valList.index(str(x))])+str(y)] = False
         tablero[x][y] = "X"+tablero[x][y]
         print("Acerto\n")
     else:                           #No acerto
@@ -173,7 +173,7 @@ def posicionarBarcosCompu(compuTablero):
                 barcosOponentes[pos] = True
                 compuTablero[int(letrasNumeros[pos[0]])][int(pos[1])] = indicadores[barco]
         else:
-            pygame.display.set_caption("Archivo de ubicacion incorrecto")
+            pygame.display.set_caption("Archivo de ubicaciones incorrecto")
             break
 
 #Pide las ubicaciones de los barcos 
@@ -212,9 +212,9 @@ def posicionarBarcos(screen,miTablero):
                     text += event.unicode
 
         screen.fill(negro)
-        txt_surface = font.render(text, True, azul)
-        entryBox.w = max(200, txt_surface.get_width()+10)
-        screen.blit(txt_surface, (entryBox.x+5, entryBox.y+5))
+        txtSurface = font.render(text, True, azul)
+        entryBox.w = max(200, txtSurface.get_width()+10)
+        screen.blit(txtSurface, (entryBox.x+5, entryBox.y+5))
         pygame.draw.rect(screen, azul, entryBox, 2)
         screen.blit(tipoBarco, textRect)
         pygame.display.flip()
@@ -228,7 +228,7 @@ def validar(lista,cantidad):
     if len(lista) == int(cantidad):
         for pos in lista:
             if pos not in misBarcos.keys():
-                if pos[0] in letrasNumeros.keys() and pos[1] in letrasNumeros.values():
+                if len(pos) == 2 and pos[0] in letrasNumeros.keys() and pos[1] in letrasNumeros.values():
                     if int(cantidad) != 1:
                         if filaAnterior != -1:
                             filaActual = int(letrasNumeros[pos[0]])
@@ -239,7 +239,7 @@ def validar(lista,cantidad):
                             else:
                                 pygame.display.set_caption("Las celdas deben ir seguidas")
                                 valido = False
-                                # break
+                                break
                         filaAnterior = int(letrasNumeros[pos[0]])
                         columnaAnterior = int(pos[1])
                     else:
@@ -247,12 +247,15 @@ def validar(lista,cantidad):
                         pygame.display.set_caption("Batalla Naval - Posicionando mis barcos")
                 else:
                     pygame.display.set_caption("Datos erroneas")
+                    valido = False
+                    break
             else:
                 pygame.display.set_caption("Ya existe un barco en esa posicion")
     else:
         pygame.display.set_caption("Cantidad de datos incorrectos, deben ser "+str(cantidad))
     return valido
     
+#Funcion para mostrar opciones de jugar otra vez o salir
 def volverJugar(screen,ganador):
     width = screen.get_width() 
     height = screen.get_height() 
@@ -269,11 +272,11 @@ def volverJugar(screen,ganador):
     cerrar = False
     jugar = False
     while not cerrar: 
-        for ev in pygame.event.get(): 
-            if ev.type == pygame.QUIT: 
+        for event in pygame.event.get(): 
+            if evwnt.type == pygame.QUIT: 
                 cerrar = True
                 jugar = False
-            if ev.type == pygame.MOUSEBUTTONDOWN: 
+            if event.type == pygame.MOUSEBUTTONDOWN: 
                 mouse = pygame.mouse.get_pos()
                 if width/4 <= mouse[0] <= width/4+70 and height/2 <= mouse[1] <= height/2+40: 
                     cerrar = True 
@@ -290,6 +293,7 @@ def volverJugar(screen,ganador):
 
         pygame.display.update() 
     return jugar
+
 #Funcion que maneja todo
 def main():
     pygame.init()
