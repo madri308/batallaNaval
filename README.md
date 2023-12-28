@@ -9,16 +9,31 @@ This project involves the implementation of a Battleship game against the comput
 ### Game Board
 
 The game board is a 10x10 grid represented by the combination of letters (rows) and numbers (columns). Users and the computer will place their ships on this board.
+![](https://raw.githubusercontent.com/madri308/batallaNaval/master/Images%20and%20videos/Screenshot%202023-12-27%20at%2022.31.03.png)
 
 ### Ships
 
 The game includes the following ships:
 
 1. **Aircraft Carrier (Portaviones):** Occupies five consecutive cells (e.g., A1, B1, C1, D1, E1).
+
+   ![](https://raw.githubusercontent.com/madri308/batallaNaval/master/Images%20and%20videos/Screenshot%202023-12-27%20at%2022.29.01.png)
+
 2. **Battleship (Acorazado):** Occupies four consecutive cells (e.g., F4, F5, F6).
+
+   ![](https://raw.githubusercontent.com/madri308/batallaNaval/master/Images%20and%20videos/Screenshot%202023-12-27%20at%2022.29.28.png)
+
 3. **Big Battleship (Crucero de Batalla):** Occupies three consecutive cells (e.g., C5, D5, E5).
+
+   ![](https://raw.githubusercontent.com/madri308/batallaNaval/master/Images%20and%20videos/Screenshot%202023-12-27%20at%2022.30.05.png)
+
 4. **Submarine (Submarino):** Occupies two consecutive cells (e.g., C4, D4).
+
+   ![](https://raw.githubusercontent.com/madri308/batallaNaval/master/Images%20and%20videos/Screenshot%202023-12-27%20at%2022.30.32.png)
+
 5. **Boat (Lancha):** Occupies a single cell (e.g., G3).
+
+   ![](https://raw.githubusercontent.com/madri308/batallaNaval/master/Images%20and%20videos/Screenshot%202023-12-27%20at%2022.30.41.png)
 
 ### Ship Placement
 
@@ -52,5 +67,7 @@ The project includes the following files and directories:
 3. Follow on-screen prompts to strategically place your ships.
 4. Take turns with the computer to hit cells on the opponent's board.
 5. Continue playing until one player sinks all the opponent's ships.
+
+https://github.com/madri308/batallaNaval/assets/40669201/50e090a5-f10c-4722-84d1-bf02cb1b4ca8
 
 Enjoy the strategic thrill of the classic Battleship game against the computer!
